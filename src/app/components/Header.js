@@ -80,7 +80,7 @@ export default function Header({ lang, setLang, theme, setTheme }) {
             </div>
 
             {/* Services — dropdown */}
-            <div className="nav-item">
+            <div className="nav-item nav-item-services">
               <button
                 className={`nav-link ${isActive("/services") ? "active" : ""}`}
                 aria-haspopup="true"
