@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WISAL | Brand & Website Presentation Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-dark: #aa8d65;
+      --emerald: #0a4d44;
+      --emerald-light: #126359;
+      --charcoal: #111111;
+      --charcoal-light: #1a1b1e;
+      --silver: #c5b49e;
+      --silver-dark: #ad9a82;
+      --slate: #5c626b;
+      --pearl: #fdfcf7;
+      --pearl-dark: #faf7ee;
+      --white: #ffffff;
+      --text: #2d3748;
+      --text-muted: #718096;
+      --border: #e2e8f0;
+      
+      --font-serif: 'Playfair Display', serif;
+      --font-sans: 'Inter', sans-serif;
+      --font-arabic: 'Cairo', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--text);
+      background-color: #f7f9fa;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Print styling and layout */
+    .page {
+      background-color: var(--white);
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 4.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media print {
+      body {
+        background-color: var(--white);
+      }
+      .page {
+        margin: 0;
+        padding: 3rem;
+        box-shadow: none;
+        border-radius: 0;
+        page-break-after: always;
+        break-after: page;
+        max-width: 100%;
+        height: 100%;
+      }
+      .no-print {
+        display: none;
+      }
+      @page {
+        margin: 0;
+      }
+    }
+
+    .page-break {
+      page-break-after: always;
+      break-after: page;
+    }
+
+    /* Header & Cover Page */
+    .cover-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 90vh;
+      padding: 2rem 0;
+    }
+
+    .cover-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 1.5rem;
+    }
+
+    .brand-logo {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--emerald);
+      letter-spacing: 2px;
+    }
+
+    .brand-logo span {
+      font-family: var(--font-arabic);
+      font-weight: 300;
+      margin-left: 0.5rem;
+    }
+
+    .cover-meta {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--text-muted);
+    }
+
+    .cover-body {
+      margin: auto 0;
+    }
+
+    .cover-tagline {
+      font-family: var(--font-sans);
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 6px;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .cover-title {
+      font-family: var(--font-serif);
+      font-size: 4.5rem;
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--emerald);
+      margin-bottom: 2rem;
+      font-style: italic;
+    }
+
+    .cover-title span {
+      display: block;
+      font-family: var(--font-arabic);
+      font-style: normal;
+      font-size: 3.5rem;
+      margin-top: 0.5rem;
+      font-weight: 400;
+    }
+
+    .cover-desc {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 650px;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    .cover-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+    }
+
+    .footer-client {
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+
+    .footer-client span {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .footer-date {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Section Headings */
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      color: var(--emerald);
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 60px;
+      height: 3px;
+      background-color: var(--gold);
+    }
+
+    .section-subtitle {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      max-width: 900px;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    .text-block {
+      margin-bottom: 2.5rem;
+    }
+
+    .text-block h3 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      color: var(--emerald);
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    .text-block p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      line-height: 1.7;
+    }
+
+    /* Grid & Cards */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      background-color: #fafbfd;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2rem;
+    }
+
+    .card-title {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      color: var(--emerald);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    /* Design Token Swatches */
+    .swatch-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .swatch {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .swatch-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 0.2rem;
+    }
+
+    .swatch-value {
+      font-family: monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Typography Swatches */
+    .typo-spec {
+      border-left: 3px solid var(--gold);
+      padding-left: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .typo-name {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .typo-preview-serif {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      font-weight: 400;
+      color: var(--emerald);
+      margin-bottom: 0.5rem;
+      font-style: italic;
+    }
+
+    .typo-preview-sans {
+      font-family: var(--font-sans);
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: var(--charcoal);
+      margin-bottom: 0.5rem;
+    }
+
+    .typo-preview-arabic {
+      font-family: var(--font-arabic);
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Browser Mockup */
+    .browser-mockup {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background-color: var(--white);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
+      margin-bottom: 2.5rem;
+      overflow: hidden;
+    }
+
+    .browser-bar {
+      height: 40px;
+      background-color: #f1f3f4;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      position: relative;
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .browser-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .browser-dot.red { background-color: #ff5f56; }
+    .browser-dot.yellow { background-color: #ffbd2e; }
+    .browser-dot.green { background-color: #27c93f; }
+
+    .browser-address {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--white);
+      border: 1px solid #e0e2e5;
+      border-radius: 4px;
+      width: 400px;
+      height: 24px;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+    }
+
+    .browser-address span {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    .browser-content {
+      position: relative;
+      background-color: #f7f9fa;
+    }
+
+    .browser-img {
+      width: 100%;
+      display: block;
+      height: auto;
+      object-fit: cover;
+    }
+
+    .browser-label {
+      background-color: #f8fafc;
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mockup-title {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--emerald);
+    }
+
+    .mockup-badge {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .badge-celebration {
+      background-color: #fef9c3;
+      color: #854d0e;
+      border: 1px solid #fef08a;
+    }
+
+    .badge-memorial {
+      background-color: #f1f5f9;
+      color: #334155;
+      border: 1px solid #e2e8f0;
+    }
+
+    .badge-arabic {
+      background-color: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #d1fae5;
+    }
+
+    .badge-english {
+      background-color: #eff6ff;
+      color: #1e40af;
+      border: 1px solid #dbeafe;
+    }
+
+    /* Print controls and buttons */
+    .print-banner {
+      background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-light) 100%);
+      color: var(--white);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 2rem auto;
+      max-width: 1200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(10, 77, 68, 0.15);
+    }
+
+    .print-banner-text h3 {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .print-banner-text p {
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+
+    .print-btn {
+      background-color: var(--gold);
+      color: var(--charcoal);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      font-family: var(--font-sans);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .print-btn:hover {
+      background-color: var(--gold-dark);
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Print Banner for visual UI (not printed) -->
+  <div class="print-banner no-print">
+    <div class="print-banner-text">
+      <h3>WISAL Website Presentation Guide</h3>
+      <p>This is a premium, print-optimized brand presentation. Click the button to export as a clean PDF document.</p>
+    </div>
+    <button class="print-btn" onclick="window.print()">Export to PDF</button>
+  </div>
+
+  <!-- PAGE 1: COVER PAGE -->
+  <div class="page">
+    <div class="cover-container">
+      <div class="cover-header">
+        <div class="brand-logo">WISAL<span>وصال</span></div>
+        <div class="cover-meta">Digital Interface Presentation</div>
+      </div>
+      
+      <div class="cover-body">
+        <div class="cover-tagline">Brand &amp; Design Architecture</div>
+        <h1 class="cover-title">
+          Connecting Hearts<br>Through Every Occasion
+          <span>وصال | لكلّ مرحلةٍ من مراحل الحياة</span>
+        </h1>
+        <p class="cover-desc">
+          A comprehensive design review and interface walkthrough of the WISAL web presence. Crafted with rich aesthetics, seamless animations, and bilingual harmony for Jordan's premier event coordination and VIP concierge services.
+        </p>
+      </div>
+      
+      <div class="cover-footer">
+        <div class="footer-client">
+          WISAL Event Coordination
+          <span>Website Presentation &amp; Style Guide</span>
+        </div>
+        <div class="footer-date">June 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2: BRAND IDENTITY & STYLE SYSTEM -->
+  <div class="page">
+    <h2 class="section-subtitle">Brand Aesthetics</h2>
+    <h1 class="section-title">Design Identity &amp; Colors</h1>
+    <p class="section-desc">
+      The WISAL identity is anchored in duality: celebrating life’s greatest joys and offering dignified remembrance in life's solemn moments. The website represents this duality through two beautifully integrated design themes, adapting its layout, colors, typography, and interactive canvas to suit the context of the user.
+    </p>
+
+    <div class="grid-2">
+      <!-- Theme 1: Celebration -->
+      <div class="card">
+        <h3 class="card-title">⚜️ Celebration Theme</h3>
+        <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 2rem; min-height: 80px;">
+          Evokes luxury, warmth, and hospitality. Designed for weddings, family milestones, corporate galas, and premium concierge client services.
+        </p>
+        
+        <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+          <div class="swatch-group">
+            <div class="swatch" style="background-color: var(--pearl);"></div>
+            <div class="swatch-label">Ivory Pearl</div>
+            <div class="swatch-value">#fdfcf7</div>
+          </div>
+          <div class="swatch-group">
+            <div class="swatch" style="background-color: var(--gold);"></div>
+            <div class="swatch-label">Royal Gold</div>
+            <div class="swatch-value">#d4af37</div>
+          </div>
+          <div class="swatch-group">
+            <div class="swatch" style="background-color: var(--emerald);"></div>
+            <div class="swatch-label">Deep Emerald</div>
+            <div class="swatch-value">#0a4d44</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme 2: Memorial -->
+      <div class="card">
+        <h3 class="card-title">🕊️ Memorial &amp; Condolences</h3>
+        <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 2rem; min-height: 80px;">
+          Instills respect, peace, and solemn dignity. Designed for funerals, Islamic condolence setups, Quran recitals, and memorial arrangements.
+        </p>
+        
+        <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+          <div class="swatch-group">
+            <div class="swatch" style="background-color: var(--charcoal-light);"></div>
+            <div class="swatch-label">Pitch Charcoal</div>
+            <div class="swatch-value">#0c0d0f</div>
+          </div>
+          <div class="swatch-group">
+            <div class="swatch" style="background-color: var(--silver);"></div>
+            <div class="swatch-label">Warm Silver</div>
+            <div class="swatch-value">#c5b49e</div>
+          </div>
+          <div class="swatch-group">
+            <div class="swatch" style="background-color: var(--slate);"></div>
+            <div class="swatch-label">Muted Slate</div>
+            <div class="swatch-value">#5c626b</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-subtitle" style="margin-top: 4rem;">Bilingual Typography</h2>
+    <h1 class="section-title">Typography &amp; Hierarchy</h1>
+    <p class="section-desc" style="margin-bottom: 2rem;">
+      Fonts are dynamically adjusted to fit the current language, using elegant serifs for English editorial content and crisp geometric Cairo for Arabic calligraphic balance.
+    </p>
+
+    <div class="grid-3">
+      <div class="typo-spec">
+        <div class="typo-name">English Editorial Serif</div>
+        <div class="typo-preview-serif">Playfair Display</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Used for large section titles, quotes, and primary headings to express prestige.</p>
+      </div>
+      
+      <div class="typo-spec">
+        <div class="typo-name">English Sans-Serif</div>
+        <div class="typo-preview-sans">Inter Font</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Used for body text, navigation elements, form fields, and metadata labels.</p>
+      </div>
+
+      <div class="typo-spec">
+        <div class="typo-name">Arabic Traditional</div>
+        <div class="typo-preview-arabic">خطّ القاهرة (Cairo)</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Used globally for all Arabic text, balancing modern styling and clear readability.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 3: TECHNICAL STACK & MOTION MECHANICS -->
+  <div class="page">
+    <h2 class="section-subtitle">Under the Hood</h2>
+    <h1 class="section-title">Technical Stack &amp; Motion Design</h1>
+    <p class="section-desc">
+      The WISAL website is built on a modern front-end stack that balances blazing-fast performance with smooth, high-fidelity interactions. Designed with a custom-engineered animation framework, it provides an immersive, tactile browsing experience.
+    </p>
+
+    <div class="text-block">
+      <h3>🚀 Core Technologies</h3>
+      <p>
+        The framework leverages <strong>Next.js 16 (App Router)</strong> and <strong>React 19</strong> to provide solid server-rendered SEO-friendly structures, paired with client-side reactive rendering. Styling uses <strong>TailwindCSS v4</strong>, integrating modern CSS custom properties and fluid typography values directly into utility classes.
+      </p>
+    </div>
+
+    <div class="text-block">
+      <h3>✨ WebGL Background Canvas (Three.js)</h3>
+      <p>
+        A background canvas is managed in the DOM using <strong>Three.js</strong>, spawning a particle simulation system. 
+        In <em>Celebration Mode</em>, 300 floating gold dust particles drift across a sinusoidal pattern. 
+        In <em>Memorial Mode</em>, the system scales down to 150 slow-moving stardust particles to establish a serene environment. The particles dynamically drift away from the cursor using mathematical distance calculations and accelerate on page scroll.
+      </p>
+    </div>
+
+    <div class="text-block">
+      <h3>🌀 Scroll Physics (Lenis + GSAP ScrollTrigger)</h3>
+      <p>
+        To ensure motion feels premium and avoids the default jagged browser scroll, the system runs <strong>Lenis Scroll</strong>. This intercepts the viewport scrolling velocity, smoothing the inertia.
+        Combined with <strong>GSAP (GreenSock Animation Platform)</strong> and <strong>ScrollTrigger</strong>, structural elements fade and slide into place sequentially as they enter the screen, mimicking high-end digital luxury catalogs.
+      </p>
+    </div>
+  </div>
+
+  <!-- PAGE 4: HERO INTERFACE PRESENTATION -->
+  <div class="page">
+    <h2 class="section-subtitle">Interface Walkthrough</h2>
+    <h1 class="section-title">The Hero Landing Experience</h1>
+    <p class="section-desc">
+      The landing screen starts with a premium cinematic intro sequence that sets a luxurious tone. Once loaded, the background displays a interactive WebGL canvas simulated with active particles (flowing gold for celebrations, floating stardust for memorials). Standard rigid borders are replaced with open whitespace layouts.
+    </p>
+
+    <!-- Celebration English Hero -->
+    <div class="browser-mockup">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot red"></div>
+          <div class="browser-dot yellow"></div>
+          <div class="browser-dot green"></div>
+        </div>
+        <div class="browser-address">localhost:3000/<span>?lang=en&amp;theme=celebration</span></div>
+      </div>
+      <div class="browser-content">
+        <img class="browser-img" src="screenshots/en_celebration_home_viewport.png" alt="English Celebration Hero">
+      </div>
+      <div class="browser-label">
+        <div class="mockup-title">English Celebration Hero Screen</div>
+        <div>
+          <span class="mockup-badge badge-celebration">Celebration</span>
+          <span class="mockup-badge badge-english">English LTR</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arabic Memorial Hero -->
+    <div class="browser-mockup">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot red"></div>
+          <div class="browser-dot yellow"></div>
+          <div class="browser-dot green"></div>
+        </div>
+        <div class="browser-address">localhost:3000/<span>?lang=ar&amp;theme=memorial</span></div>
+      </div>
+      <div class="browser-content">
+        <img class="browser-img" src="screenshots/ar_memorial_home_viewport.png" alt="Arabic Memorial Hero">
+      </div>
+      <div class="browser-label">
+        <div class="mockup-title">Arabic Memorial Hero Screen</div>
+        <div>
+          <span class="mockup-badge badge-memorial">Memorial</span>
+          <span class="mockup-badge badge-arabic">Arabic RTL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 5: ABOUT & BRAND PHILOSOPHY -->
+  <div class="page">
+    <h2 class="section-subtitle">Interface Walkthrough</h2>
+    <h1 class="section-title">About WISAL &amp; Identity Duality</h1>
+    <p class="section-desc">
+      The About section details the company's core values: Trust, Integrity, and Empathy. When toggled, the floating calligraphic background shifts from the gold "وصال" (Connection) in celebration mode, to a silver, peaceful backdrop in memorial mode.
+    </p>
+
+    <!-- Celebration About (English) -->
+    <div class="browser-mockup">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot red"></div>
+          <div class="browser-dot yellow"></div>
+          <div class="browser-dot green"></div>
+        </div>
+        <div class="browser-address">localhost:3000/<span>?lang=en&amp;theme=celebration#about</span></div>
+      </div>
+      <div class="browser-content">
+        <img class="browser-img" src="screenshots/en_celebration_about_viewport.png" alt="English Celebration About">
+      </div>
+      <div class="browser-label">
+        <div class="mockup-title">About Section - English Celebration Theme</div>
+        <div>
+          <span class="mockup-badge badge-celebration">Celebration</span>
+          <span class="mockup-badge badge-english">English LTR</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Memorial About (Arabic) -->
+    <div class="browser-mockup">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot red"></div>
+          <div class="browser-dot yellow"></div>
+          <div class="browser-dot green"></div>
+        </div>
+        <div class="browser-address">localhost:3000/<span>?lang=ar&amp;theme=memorial#about</span></div>
+      </div>
+      <div class="browser-content">
+        <img class="browser-img" src="screenshots/ar_memorial_about_viewport.png" alt="Arabic Memorial About">
+      </div>
+      <div class="browser-label">
+        <div class="mockup-title">About Section - Arabic Memorial Theme</div>
+        <div>
+          <span class="mockup-badge badge-memorial">Memorial</span>
+          <span class="mockup-badge badge-arabic">Arabic RTL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 6: BESPOKE SERVICES & PACKAGES -->
+  <div class="page">
+    <h2 class="section-subtitle">Interface Walkthrough</h2>
+    <h1 class="section-title">Bespoke Divisions &amp; Curated Packages</h1>
+    <p class="section-desc">
+      Services are presented in an editorial grid. There are six main divisions: Weddings, Family, Corporate, Memorials, Islamic custom ceremonies, and VIP airport meet-and-assist. Curated package suites are presented like a high-end concierge booklet.
+    </p>
+
+    <!-- English Celebration Services -->
+    <div class="browser-mockup">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot red"></div>
+          <div class="browser-dot yellow"></div>
+          <div class="browser-dot green"></div>
+        </div>
+        <div class="browser-address">localhost:3000/<span>?lang=en&amp;theme=celebration#services</span></div>
+      </div>
+      <div class="browser-content">
+        <img class="browser-img" src="screenshots/en_celebration_services_viewport.png" alt="English Celebration Services">
+      </div>
+      <div class="browser-label">
+        <div class="mockup-title">Bespoke Divisions - English Celebration</div>
+        <div>
+          <span class="mockup-badge badge-celebration">Celebration</span>
+          <span class="mockup-badge badge-english">English LTR</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- English Memorial Packages -->
+    <div class="browser-mockup">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot red"></div>
+          <div class="browser-dot yellow"></div>
+          <div class="browser-dot green"></div>
+        </div>
+        <div class="browser-address">localhost:3000/<span>?lang=en&amp;theme=memorial#packages</span></div>
+      </div>
+      <div class="browser-content">
+        <img class="browser-img" src="screenshots/en_memorial_packages_viewport.png" alt="English Memorial Packages">
+      </div>
+      <div class="browser-label">
+        <div class="mockup-title">Curated Service Suites - English Memorial Tiers</div>
+        <div>
+          <span class="mockup-badge badge-memorial">Memorial</span>
+          <span class="mockup-badge badge-english">English LTR</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 7: WHY CHOOSE WISAL & CONSULTATION INQUIRY -->
+  <div class="page">
+    <h2 class="section-subtitle">Interface Walkthrough</h2>
+    <h1 class="section-title">Value Proposition &amp; Concierge Inquiry</h1>
+    <p class="section-desc">
+      A 9-point value proposition covers everything from WISAL’s trusted shaper network to 24/7 emergency dispatch. The multi-step client inquiry form is styled with glassmorphism to log bookings and automatically direct inquiries to WhatsApp.
+    </p>
+
+    <!-- Arabic Celebration Why Choose Wisal -->
+    <div class="browser-mockup">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot red"></div>
+          <div class="browser-dot yellow"></div>
+          <div class="browser-dot green"></div>
+        </div>
+        <div class="browser-address">localhost:3000/<span>?lang=ar&amp;theme=celebration#why</span></div>
+      </div>
+      <div class="browser-content">
+        <img class="browser-img" src="screenshots/ar_celebration_why_viewport.png" alt="Arabic Celebration Why Choose Wisal">
+      </div>
+      <div class="browser-label">
+        <div class="mockup-title">Value Proposition Grid - Arabic Celebration</div>
+        <div>
+          <span class="mockup-badge badge-celebration">Celebration</span>
+          <span class="mockup-badge badge-arabic">Arabic RTL</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- English Celebration Quote Form -->
+    <div class="browser-mockup">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot red"></div>
+          <div class="browser-dot yellow"></div>
+          <div class="browser-dot green"></div>
+        </div>
+        <div class="browser-address">localhost:3000/<span>?lang=en&amp;theme=celebration#quote</span></div>
+      </div>
+      <div class="browser-content">
+        <img class="browser-img" src="screenshots/en_celebration_quote_viewport.png" alt="English Celebration Quote Form">
+      </div>
+      <div class="browser-label">
+        <div class="mockup-title">Consultation Request Form - English Celebration</div>
+        <div>
+          <span class="mockup-badge badge-celebration">Celebration</span>
+          <span class="mockup-badge badge-english">English LTR</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 8: USER PIPELINE & DIRECT COMMUNICATION -->
+  <div class="page">
+    <h2 class="section-subtitle">Operational Strategy</h2>
+    <h1 class="section-title">Client Inquiry &amp; Dispatch Flow</h1>
+    <p class="section-desc">
+      The website functions not just as a static portfolio, but as a live concierge dispatcher. The client acquisition pipeline has been optimized to ensure inquiries are routed immediately to coordinators based in Amman.
+    </p>
+
+    <div class="text-block">
+      <h3>📥 Stateful Booking Pipeline</h3>
+      <p>
+        The consultation form uses a single state-hook object in React that dynamically tracks client selections (Event date, Guest count, expected venue, budget range, and custom notes). 
+        All form inputs are validated client-side to ensure required information (Full name, phone, and category) is filled out prior to dispatch.
+      </p>
+    </div>
+
+    <div class="text-block">
+      <h3>💬 WhatsApp Concierge API Dispatch</h3>
+      <p>
+        When the user submits the form, instead of relying on slow, un-read emails, the system triggers a direct redirect using the <code>https://wa.me/</code> endpoint. 
+        The React state object compiles all inputs into a beautiful, pre-written, and readable WhatsApp message. 
+        For example: 
+        <em>"Hello WISAL, I would like to request a consultation. Name: Ahmad. Phone: 079... Event Type: Wedding on 2026-09-12 at The Ritz-Carlton Amman..."</em>.
+        This provides an instant and high-touch VIP response rate.
+      </p>
+    </div>
+
+    <div class="text-block">
+      <h3>🌍 W3C Multilingual Standards</h3>
+      <p>
+        To accommodate both local Jordanian families and international corporate clients, the site enforces complete language separation. 
+        Language changes dynamically toggle the browser root attributes (<code>document.documentElement.lang</code> and <code>document.documentElement.dir</code>) to shift between Left-to-Right (LTR) and Right-to-Left (RTL) mode.
+        Fonts, flexbox alignments, text paddings, and GSAP slide vectors adjust instantly to preserve perfect editorial layouts.
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>
