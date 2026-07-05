@@ -49,167 +49,183 @@ function HomeContent({ lang, theme, t }) {
     if (!container) return;
 
     let animId;
-    container.innerHTML = "";
-    const canvas = document.createElement("canvas");
-    canvas.style.cssText = "width:100%;height:100%;display:block;";
-    container.appendChild(canvas);
+    let canvas;
+    let onMouse, onResize, onScrollInternal;
+    let initialized = false;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 2000);
-    camera.position.z = 70;
+    try {
+      container.innerHTML = "";
+      canvas = document.createElement("canvas");
+      canvas.style.cssText = "width:100%;height:100%;display:block;";
+      container.appendChild(canvas);
 
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 2000);
+      camera.position.z = 70;
 
-    const goldColor = theme === "celebration" ? 0xc8a84b : 0xc4b298;
-
-    // ── Large nested orbit rings ──────────────────────────────
-    const ringGroup = new THREE.Group();
-    const ringConfigs = [
-      { r: 18, tube: 0.18, opacity: 0.22 },
-      { r: 14, tube: 0.15, opacity: 0.18 },
-      { r: 10, tube: 0.12, opacity: 0.14 },
-      { r: 7,  tube: 0.09, opacity: 0.10 },
-    ];
-    const ringMeshes = ringConfigs.map(({ r, tube, opacity }, i) => {
-      const mat = new THREE.MeshBasicMaterial({
-        color: goldColor, wireframe: false,
-        transparent: true, opacity,
-      });
-      const geo = new THREE.TorusGeometry(r, tube, 12, 100);
-      const mesh = new THREE.Mesh(geo, mat);
-      if (i === 1) { mesh.rotation.x = Math.PI / 2.5; mesh.rotation.z = 0.4; }
-      if (i === 2) { mesh.rotation.x = Math.PI / 4; mesh.rotation.y = Math.PI / 5; }
-      if (i === 3) { mesh.rotation.x = -Math.PI / 3; mesh.rotation.z = -0.6; }
-      ringGroup.add(mesh);
-      return { mesh, baseMat: mat };
-    });
-    scene.add(ringGroup);
-
-    // ── Outer wireframe halo ──────────────────────────────────
-    const haloMat = new THREE.MeshBasicMaterial({ color: goldColor, wireframe: true, transparent: true, opacity: 0.06 });
-    const haloGeo = new THREE.TorusGeometry(26, 0.15, 6, 120);
-    const halo = new THREE.Mesh(haloGeo, haloMat);
-    halo.rotation.x = Math.PI / 6;
-    scene.add(halo);
-
-    // ── Gold floating particles ───────────────────────────────
-    const flakeGeo = new THREE.OctahedronGeometry(0.35, 0);
-    const flakes = Array.from({ length: 160 }, () => {
-      const mat = new THREE.MeshBasicMaterial({
-        color: goldColor, transparent: true,
-        opacity: 0.25 + Math.random() * 0.55,
-      });
-      const m = new THREE.Mesh(flakeGeo, mat);
-      m.position.set(
-        (Math.random() - 0.5) * 160,
-        (Math.random() - 0.5) * 160,
-        (Math.random() - 0.5) * 120
-      );
-      m.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-      const s = 0.5 + Math.random() * 2.2;
-      m.scale.set(s, s, s);
-      scene.add(m);
-      return {
-        mesh: m,
-        vy: 0.025 + Math.random() * 0.055,
-        sx: Math.random() * Math.PI * 2,
-        sy: (Math.random() - 0.5) * 0.015,
-        rx: (Math.random() - 0.5) * 0.015,
-        baseMat: mat,
-      };
-    });
-
-    // ── Star-field dots ───────────────────────────────────────
-    const starGeo = new THREE.BufferGeometry();
-    const starCount = 400;
-    const starPos = new Float32Array(starCount * 3);
-    for (let i = 0; i < starCount * 3; i++) starPos[i] = (Math.random() - 0.5) * 400;
-    starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
-    const starMat = new THREE.PointsMaterial({ color: goldColor, size: 0.3, transparent: true, opacity: 0.25 });
-    scene.add(new THREE.Points(starGeo, starMat));
-
-    // store refs for scroll updates
-    sceneRef.current = { ringMeshes, flakes, haloMat, starMat, ringGroup };
-
-    let mx = 0, my = 0, tx = 0, ty = 0;
-    const onMouse = (e) => {
-      mx = (e.clientX - window.innerWidth / 2) / 400;
-      my = (e.clientY - window.innerHeight / 2) / 400;
-    };
-    const onResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-    window.addEventListener("mousemove", onMouse);
-    window.addEventListener("resize", onResize);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    let scrollProgress = 0;
-    const onScrollInternal = () => {
-      scrollProgress = Math.min(window.scrollY / (window.innerHeight * 0.8), 1);
-    };
-    window.addEventListener("scroll", onScrollInternal, { passive: true });
+      const goldColor = theme === "celebration" ? 0xc8a84b : 0xc4b298;
 
-    let elapsedTime = 0;
-    let lastTime = performance.now();
-
-    const animate = () => {
-      animId = requestAnimationFrame(animate);
-      const now = performance.now();
-      const delta = (now - lastTime) / 1000;
-      lastTime = now;
-      elapsedTime += delta;
-
-      // Scroll-driven scale & opacity boost (modest growth to fit in half screen)
-      const boost = 1 + scrollProgress * 0.25;
-      ringGroup.scale.setScalar(boost);
-      halo.scale.setScalar(boost);
-
-      // Ring opacity increases with scroll
-      ringMeshes.forEach(({ mesh, baseMat }, i) => {
-        baseMat.opacity = Math.min(ringConfigs[i].opacity * (1 + scrollProgress * 3), 0.65);
+      // ── Large nested orbit rings ──────────────────────────────
+      const ringGroup = new THREE.Group();
+      const ringConfigs = [
+        { r: 18, tube: 0.18, opacity: 0.22 },
+        { r: 14, tube: 0.15, opacity: 0.18 },
+        { r: 10, tube: 0.12, opacity: 0.14 },
+        { r: 7,  tube: 0.09, opacity: 0.10 },
+      ];
+      const ringMeshes = ringConfigs.map(({ r, tube, opacity }, i) => {
+        const mat = new THREE.MeshBasicMaterial({
+          color: goldColor, wireframe: false,
+          transparent: true, opacity,
+        });
+        const geo = new THREE.TorusGeometry(r, tube, 12, 100);
+        const mesh = new THREE.Mesh(geo, mat);
+        if (i === 1) { mesh.rotation.x = Math.PI / 2.5; mesh.rotation.z = 0.4; }
+        if (i === 2) { mesh.rotation.x = Math.PI / 4; mesh.rotation.y = Math.PI / 5; }
+        if (i === 3) { mesh.rotation.x = -Math.PI / 3; mesh.rotation.z = -0.6; }
+        ringGroup.add(mesh);
+        return { mesh, baseMat: mat };
       });
-      haloMat.opacity = 0.06 + scrollProgress * 0.18;
-      starMat.opacity = 0.25 + scrollProgress * 0.45;
+      scene.add(ringGroup);
 
-      // Flake opacity brightens on scroll
-      flakes.forEach((f) => {
-        f.baseMat.opacity = Math.min((0.25 + Math.random() * 0.3) * (1 + scrollProgress * 1.5), 0.9);
-        f.mesh.position.y += f.vy;
-        f.mesh.position.x += Math.sin(elapsedTime + f.sx) * 0.015;
-        f.mesh.rotation.x += f.rx;
-        f.mesh.rotation.y += f.sy;
-        if (f.mesh.position.y > 90) {
-          f.mesh.position.y = -90;
-          f.mesh.position.x = (Math.random() - 0.5) * 160;
-        }
+      // ── Outer wireframe halo ──────────────────────────────────
+      const haloMat = new THREE.MeshBasicMaterial({ color: goldColor, wireframe: true, transparent: true, opacity: 0.06 });
+      const haloGeo = new THREE.TorusGeometry(26, 0.15, 6, 120);
+      const halo = new THREE.Mesh(haloGeo, haloMat);
+      halo.rotation.x = Math.PI / 6;
+      scene.add(halo);
+
+      // ── Gold floating particles ───────────────────────────────
+      const flakeGeo = new THREE.OctahedronGeometry(0.35, 0);
+      const flakes = Array.from({ length: 160 }, () => {
+        const mat = new THREE.MeshBasicMaterial({
+          color: goldColor, transparent: true,
+          opacity: 0.25 + Math.random() * 0.55,
+        });
+        const m = new THREE.Mesh(flakeGeo, mat);
+        m.position.set(
+          (Math.random() - 0.5) * 160,
+          (Math.random() - 0.5) * 160,
+          (Math.random() - 0.5) * 120
+        );
+        m.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+        const s = 0.5 + Math.random() * 2.2;
+        m.scale.set(s, s, s);
+        scene.add(m);
+        return {
+          mesh: m,
+          vy: 0.025 + Math.random() * 0.055,
+          sx: Math.random() * Math.PI * 2,
+          sy: (Math.random() - 0.5) * 0.015,
+          rx: (Math.random() - 0.5) * 0.015,
+          baseMat: mat,
+        };
       });
 
-      // Slow orbit rotation — speeds up on scroll
-      const rotSpeed = 0.0006 + scrollProgress * 0.0012;
-      ringGroup.rotation.y += rotSpeed;
-      ringGroup.rotation.x += rotSpeed * 0.5;
-      halo.rotation.z += 0.0003;
+      // ── Star-field dots ───────────────────────────────────────
+      const starGeo = new THREE.BufferGeometry();
+      const starCount = 400;
+      const starPos = new Float32Array(starCount * 3);
+      for (let i = 0; i < starCount * 3; i++) starPos[i] = (Math.random() - 0.5) * 400;
+      starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
+      const starMat = new THREE.PointsMaterial({ color: goldColor, size: 0.3, transparent: true, opacity: 0.25 });
+      scene.add(new THREE.Points(starGeo, starMat));
 
-      // Mouse parallax
-      tx += (mx - tx) * 0.025;
-      ty += (my - ty) * 0.025;
-      camera.position.x = tx * 5;
-      camera.position.y = -ty * 5;
-      camera.lookAt(scene.position);
+      // store refs for scroll updates
+      sceneRef.current = { ringMeshes, flakes, haloMat, starMat, ringGroup };
 
-      renderer.render(scene, camera);
-    };
-    animate();
+      let mx = 0, my = 0, tx = 0, ty = 0;
+      onMouse = (e) => {
+        mx = (e.clientX - window.innerWidth / 2) / 400;
+        my = (e.clientY - window.innerHeight / 2) / 400;
+      };
+      onResize = () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      };
+      window.addEventListener("mousemove", onMouse);
+      window.addEventListener("resize", onResize);
+
+      let scrollProgress = 0;
+      onScrollInternal = () => {
+        scrollProgress = Math.min(window.scrollY / (window.innerHeight * 0.8), 1);
+      };
+      window.addEventListener("scroll", onScrollInternal, { passive: true });
+
+      let elapsedTime = 0;
+      let lastTime = performance.now();
+
+      const animate = () => {
+        animId = requestAnimationFrame(animate);
+        const now = performance.now();
+        const delta = (now - lastTime) / 1000;
+        lastTime = now;
+        elapsedTime += delta;
+
+        // Scroll-driven scale & opacity boost (modest growth to fit in half screen)
+        const boost = 1 + scrollProgress * 0.25;
+        ringGroup.scale.setScalar(boost);
+        halo.scale.setScalar(boost);
+
+        // Ring opacity increases with scroll
+        ringMeshes.forEach(({ mesh, baseMat }, i) => {
+          baseMat.opacity = Math.min(ringConfigs[i].opacity * (1 + scrollProgress * 3), 0.65);
+        });
+        haloMat.opacity = 0.06 + scrollProgress * 0.18;
+        starMat.opacity = 0.25 + scrollProgress * 0.45;
+
+        // Flake opacity brightens on scroll
+        flakes.forEach((f) => {
+          f.baseMat.opacity = Math.min((0.25 + Math.random() * 0.3) * (1 + scrollProgress * 1.5), 0.9);
+          f.mesh.position.y += f.vy;
+          f.mesh.position.x += Math.sin(elapsedTime + f.sx) * 0.015;
+          f.mesh.rotation.x += f.rx;
+          f.mesh.rotation.y += f.sy;
+          if (f.mesh.position.y > 90) {
+            f.mesh.position.y = -90;
+            f.mesh.position.x = (Math.random() - 0.5) * 160;
+          }
+        });
+
+        // Slow orbit rotation — speeds up on scroll
+        const rotSpeed = 0.0006 + scrollProgress * 0.0012;
+        ringGroup.rotation.y += rotSpeed;
+        ringGroup.rotation.x += rotSpeed * 0.5;
+        halo.rotation.z += 0.0003;
+
+        // Mouse parallax
+        tx += (mx - tx) * 0.025;
+        ty += (my - ty) * 0.025;
+        camera.position.x = tx * 5;
+        camera.position.y = -ty * 5;
+        camera.lookAt(scene.position);
+
+        renderer.render(scene, camera);
+      };
+      animate();
+      initialized = true;
+    } catch (e) {
+      console.warn("WebGL initialization failed or is unsupported on this browser:", e);
+      if (canvas && container.contains(canvas)) {
+        container.removeChild(canvas);
+      }
+    }
 
     return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener("mousemove", onMouse);
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("scroll", onScrollInternal);
-      if (container.contains(canvas)) container.removeChild(canvas);
+      if (initialized) {
+        if (animId) cancelAnimationFrame(animId);
+        if (onMouse) window.removeEventListener("mousemove", onMouse);
+        if (onResize) window.removeEventListener("resize", onResize);
+        if (onScrollInternal) window.removeEventListener("scroll", onScrollInternal);
+      }
+      if (canvas && container.contains(canvas)) {
+        container.removeChild(canvas);
+      }
     };
   }, [theme]);
 
