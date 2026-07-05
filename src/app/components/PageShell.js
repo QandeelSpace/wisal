@@ -13,29 +13,37 @@ export default function PageShell({ children }) {
 
   useEffect(() => {
     // Persist lang/theme from sessionStorage
-    const storedLang = sessionStorage.getItem("wisal-lang");
-    const storedTheme = sessionStorage.getItem("wisal-theme");
-    if (storedLang === "en" || storedLang === "ar") {
-      setLang(storedLang);
-      document.documentElement.lang = storedLang;
-      document.documentElement.dir = storedLang === "ar" ? "rtl" : "ltr";
-    }
-    if (storedTheme === "celebration" || storedTheme === "memorial") {
-      setTheme(storedTheme);
-      document.documentElement.setAttribute("data-theme", storedTheme);
+    try {
+      const storedLang = sessionStorage.getItem("wisal-lang");
+      const storedTheme = sessionStorage.getItem("wisal-theme");
+      if (storedLang === "en" || storedLang === "ar") {
+        setLang(storedLang);
+        document.documentElement.lang = storedLang;
+        document.documentElement.dir = storedLang === "ar" ? "rtl" : "ltr";
+      }
+      if (storedTheme === "celebration" || storedTheme === "memorial") {
+        setTheme(storedTheme);
+        document.documentElement.setAttribute("data-theme", storedTheme);
+      }
+    } catch (e) {
+      console.warn("Storage is blocked or inaccessible:", e);
     }
   }, []);
 
   const handleSetLang = (l) => {
     setLang(l);
-    sessionStorage.setItem("wisal-lang", l);
+    try {
+      sessionStorage.setItem("wisal-lang", l);
+    } catch (e) {}
     document.documentElement.lang = l;
     document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
   };
 
   const handleSetTheme = (th) => {
     setTheme(th);
-    sessionStorage.setItem("wisal-theme", th);
+    try {
+      sessionStorage.setItem("wisal-theme", th);
+    } catch (e) {}
     document.documentElement.setAttribute("data-theme", th);
   };
 
